@@ -53,7 +53,7 @@ const AdminAddDoctor = () => {
       const {data} = await axios.post(backendUrl + '/api/admin/add-doctor' ,formData,{headers:{adminToken}})
       console.log("data:" ,data)
       if(data.success){
-        toast.success(data.message)
+        toast.success(data.message);
         setDocImg(false)
         setName('')
         setPassword('')

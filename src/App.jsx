@@ -9,13 +9,15 @@ import DashBoard from './pages/AdminPages/DashBoard';
 import AllAppointments from './pages/AdminPages/AllAppointments';
 import DoctorsList from './pages/AdminPages/DoctorsList';
 import AdminAddDoctor from './pages/AdminPages/AdminAddDoctor';
+import { DoctorContext } from './context/DoctorContext';
 
 const App = () => {
 
   const { adminToken } = useContext(AdminContext)
+  const {doctorToken} = useContext(DoctorContext)
 
 
-  return adminToken ? (
+  return adminToken || doctorToken ? (
     <div>
       <ToastContainer />
       <Navbar />

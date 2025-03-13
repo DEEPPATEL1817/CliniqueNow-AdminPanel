@@ -1,4 +1,4 @@
-import React, { useContext, useState} from 'react'
+import React, { useContext, useState } from 'react'
 import { AdminContext } from '../context/AdminContext'
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -10,42 +10,43 @@ const Login = () => {
   const [state, setState] = useState('Admin')
 
   const [email, setEmail] = useState('')
-  const [password , setPassword] = useState('')
+  const [password, setPassword] = useState('')
 
-  const {setAdminToken,backendUrl} = useContext(AdminContext)
-  const {setDoctorToken} = useContext(DoctorContext)
+  const { setAdminToken, backendUrl } = useContext(AdminContext)
+  const { setDoctorToken } = useContext(DoctorContext)
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
     try {
-     console.log("backend url" , backendUrl)
+      console.log("backend url", backendUrl)
 
-     if (state === 'Admin') {
-      const {data} = await axios.post(backendUrl + '/api/admin/admin-login',{email,password})
-      console.log("token ",data)
-      if(data){
-        console.log("token",data.token)
-        localStorage.setItem("adminToken", data.token)
-        setAdminToken(data.token)
-      }
+      if (state === 'Admin') {
+        const { data } = await axios.post(backendUrl + '/api/admin/admin-login', { email, password })
+        console.log("token ", data)
+        if (data) {
+          console.log("token", data.token)
+          localStorage.setItem("adminToken", data.token)
+          setAdminToken(data.token)
+        }
+        else {
+          toast.error(data.message || "Invalid credentials")
+        }
+      } 
       else{
-       toast.error(data.message || "Invalid credentials")
-      }
-     } else {
-        const {data} = await axios.post(backendUrl + '/api/doctor/login',{email,password})
-        
-        if(data){
-          console.log("token",data.doctorToken)
-          localStorage.setItem("DoctorToken", data.doctorToken)
+        const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password })
+
+        if (data) {
+          console.log("token", data.doctorToken)
+          localStorage.setItem("doctorToken", data.doctorToken)
           setDoctorToken(data.doctorToken)
-          console.log(data.doctorToken)
-        }        
-
-
-     }
+          console.log("token of doctor",data.doctorToken)
+        } else {
+          toast.error(data.message)
+        }
+      }
     } catch (error) {
-      console.log("error in login :" ,error)
+      console.log("error in login :", error)
     }
   }
 
@@ -60,16 +61,16 @@ const Login = () => {
         </p>
         <div className='w-full'>
           <p>Email</p>
-          <input onChange={(e)=>setEmail(e.target.value)}  value={email} className='border border-gray-600 rounded w-full p-2 mt-1' type="email" required />
+          <input onChange={(e) => setEmail(e.target.value)} value={email} className='border border-gray-600 rounded w-full p-2 mt-1' type="email" required />
         </div>
         <div className='w-full'>
           <p>Password</p>
-          <input onChange={(e)=>setPassword(e.target.value)}  value={password} className='border border-gray-600 rounded w-full p-2 mt-1' type="password" required />
+          <input onChange={(e) => setPassword(e.target.value)} value={password} className='border border-gray-600 rounded w-full p-2 mt-1' type="password" required />
         </div>
         <button className='bg-primary text-white w-full p-2 rounded-md hover:bg-blue-700'>Login</button>
         {
-          state === "Admin" ? <p>Doctor Login? <span onClick={()=>setState('Doctor')} className='cursor-pointer underline text-primary'>Click here</span></p> 
-          : <p>Admin Login? <span onClick={()=>setState('Admin')} className='cursor-pointer underline text-primary'>Click here</span></p> 
+          state === "Admin" ? <p>Doctor Login? <span onClick={() => setState('Doctor')} className='cursor-pointer underline text-primary'>Click here</span></p>
+            : <p>Admin Login? <span onClick={() => setState('Admin')} className='cursor-pointer underline text-primary'>Click here</span></p>
 
         }
       </div>

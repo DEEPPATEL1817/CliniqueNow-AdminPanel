@@ -10,14 +10,14 @@ const DoctorContextProvider = (props) => {
 
     const [doctorToken, setDoctorToken] = useState(localStorage.getItem('doctorToken') ? localStorage.getItem('doctorToken') : '' ) 
 
-    const [appointments, setAppoinments] = useState([])
+    const [appointments, setAppointments] = useState([])
 
     const getAppointments = async()=>{
         try {
             const {data} = await axios.get(backendUrl + '/api/doctor/appointments',{headers:{doctorToken}})
-
+            console.log("data and token of doctor:",data)
             if(data){
-                setAppoinments(data.appointment.reverse())
+                setAppointments(data.appointment.reverse())
                 console.log("appointment data of doctor:",data.appointments.reverse())
             }else{
                 toast.error(data.message)
@@ -28,12 +28,49 @@ const DoctorContextProvider = (props) => {
         }
     }
 
+    const completeAppointment = async (appointmentId) => {
+        try {
+            const {data} = await axios.post(backendUrl + '/api/doctor/complete-appointment' , {appointmentId},{headers:{doctorToken}})
+
+            if(data){
+                toast.success(data.message)
+                getAppointments()
+            }
+            else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log("something went wrong to complete appointments of doctor:", error)
+            toast.error(error.message)
+        }
+    }
+
+    const cancelAppointment = async (appointmentId) => {
+        try {
+            const {data} = await axios.post(backendUrl + '/api/doctor/cancel-appointment' , {appointmentId},{headers:{doctorToken}})
+
+            if(data){
+                toast.success(data.message)
+                getAppointments()
+            }
+            else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            console.log("something went wrong to complete appointments of doctor:", error)
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         doctorToken ,
+        backendUrl,
         setDoctorToken,
-        setAppoinments,
+        setAppointments,
         appointments,
-        getAppointments
+        getAppointments,
+        completeAppointment,
+        cancelAppointment
     }
     return (
         <DoctorContext.Provider value={value}>

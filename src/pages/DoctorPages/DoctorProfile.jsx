@@ -1,12 +1,14 @@
 import { AppContext } from '@/context/AppContext'
 import { DoctorContext } from '@/context/DoctorContext'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 const DoctorProfile = () => {
 
   const {doctorToken, profileData, setProfileData, getProfileData} = useContext(DoctorContext)
 
   const {currency , backendUrl} = useContext(AppContext)
+
+  const [isEdit , setIsEdit] = useState(false)
 
   useEffect(()=> {
     if(doctorToken){
@@ -38,19 +40,22 @@ const DoctorProfile = () => {
           </div>
 
           <p className='text-gray-600 font-medium mt-4'>
-            Appointment fees: <span className='text-gray-800'>{currency}{profileData.fees}</span></p>
+            Appointment fees: <span className='text-gray-800'>{currency}{isEdit ? <input type="number" onChange={(e) => setProfileData(prev => ({...prev, fees: e.target.value}))} value={profileData.fees} /> : profileData.fees}</span></p>
 
           <div className='flex gap-2 py-2'>
             <p>Address:</p>
-            <p className='text-sm'>{profileData.address}</p>
+            <p className='text-sm'>{isEdit ? <input type="text" onChange={(e)=>setProfileData(prev => ({...prev,address:e.target.value}))} value={profileData.address} /> : profileData.address}</p>
           </div>
 
           <div className='flex gap-1 pt-2'>
-            <input type="checkbox" />
+            <input onChange={()=> isEdit && setProfileData(prev => ({...prev,available:!prev.available}) )} checked={profileData.available} type="checkbox" />
             <label htmlFor="">Available</label>
           </div>
-
-          <button className='px-4 py-1 border border-primary  text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Edit</button>
+            {
+              isEdit 
+              ?<button onClick={() => setIsEdit(false)} className='px-4 py-1 border border-primary  text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Save</button>
+              :<button onClick={() => setIsEdit(true)} className='px-4 py-1 border border-primary  text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Edit</button>
+            }
         </div>
       </div>
     </div>

@@ -1,14 +1,41 @@
 import { AppContext } from '@/context/AppContext'
 import { DoctorContext } from '@/context/DoctorContext'
+import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const DoctorProfile = () => {
 
-  const {doctorToken, profileData, setProfileData, getProfileData} = useContext(DoctorContext)
+  const {doctorToken, profileData, setProfileData, getProfileData,backendUrl} = useContext(DoctorContext)
 
-  const {currency , backendUrl} = useContext(AppContext)
+  const {currency } = useContext(AppContext)
 
   const [isEdit , setIsEdit] = useState(false)
+
+  const updateProfile = async () => {
+
+    try {
+      const updateData = {
+        address: profileData.address,
+        fees: profileData.fees,
+        available: profileData.available,
+      }
+      
+      const {data} = await axios.post(backendUrl + '/api/doctor/update-profile',updateData , {headers:{doctorToken}})
+
+      if (data) {
+        toast.success(data.message)
+        setIsEdit(false)
+        getProfileData()
+      }
+      else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+      console.log("something wrong to update doctor profile",error)
+    }
+  }
 
   useEffect(()=> {
     if(doctorToken){
@@ -53,7 +80,7 @@ const DoctorProfile = () => {
           </div>
             {
               isEdit 
-              ?<button onClick={() => setIsEdit(false)} className='px-4 py-1 border border-primary  text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Save</button>
+              ?<button onClick={updateProfile} className='px-4 py-1 border border-primary  text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Save</button>
               :<button onClick={() => setIsEdit(true)} className='px-4 py-1 border border-primary  text-sm rounded-full mt-5 hover:bg-primary hover:text-white transition-all'>Edit</button>
             }
         </div>

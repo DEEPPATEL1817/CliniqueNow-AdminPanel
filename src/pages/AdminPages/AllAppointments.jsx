@@ -5,15 +5,15 @@ import React, { useContext, useEffect } from 'react'
 
 const AllAppointments = () => {
 
-  const {adminToken , appointments,setAppointments,getAllAppointments , cancelAppointment} = useContext(AdminContext)
+  const { adminToken, appointments, setAppointments, getAllAppointments, cancelAppointment } = useContext(AdminContext)
 
-  const {calculateAge , slotDateFormat, currency} = useContext(AppContext)
+  const { calculateAge, slotDateFormat, currency } = useContext(AppContext)
 
-  useEffect(()=> {
-    if(adminToken){
+  useEffect(() => {
+    if (adminToken) {
       getAllAppointments()
     }
-  },[adminToken])
+  }, [adminToken])
 
   return (
     <div className='w-full max-w-6xl m-5'>
@@ -30,7 +30,7 @@ const AllAppointments = () => {
           <p>Actions</p>
         </div>
 
-        {appointments.map((item,index)=>(
+        {appointments.map((item, index) => (
           <div key={index} className='flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] item-center text-gray-500 px-6 py-3 border-b hover:bg-gray-50' >
             <p className='max-sm:hidden'>{index + 1}</p>
             <div className='flex item-center gap-2'>
@@ -45,8 +45,11 @@ const AllAppointments = () => {
             </div>
             <p>{currency}{item.amount}</p>
             {
-            item.cancelled ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> :  
-            <img onClick={()=> cancelAppointment(item._id)} src={assets.cancel_icon} alt="" className='w-10 cursor-pointer' />
+              item.cancelled
+                ? <p className='text-red-400 text-xs font-medium'>Cancelled</p>
+                : item.isCompleted
+                ? <p className='text-green-500 text-xs font-medium'>Completed</p>
+                : <img onClick={() => cancelAppointment(item._id)} src={assets.cancel_icon} alt="" className='w-10 cursor-pointer' />
             }
           </div>
         ))}

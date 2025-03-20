@@ -34,6 +34,7 @@ const Login = () => {
         }
       } 
       else{
+        console.log("Request payload:", { email, password });
         const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password })
 
         if (data) {

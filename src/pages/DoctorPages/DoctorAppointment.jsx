@@ -31,12 +31,12 @@ const DoctorAppointment = () => {
         </div>
         {
           appointments.reverse().map((item, index) => (
-            <div key={index} className='flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50'>
-              <p>{index + 1}</p>
-              <div className='block'>
-                <img src={item.userData.image} alt="" />
-                <p>{item.userData.name}</p>
+            <div key={index} className='flex flex-wrap sm:justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1fr] gap-1 items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50'>
+              <p className='hidden'>{index + 1}</p>
+              <div className=''>
+                <img src={item.userData.image} alt="" className='w-32 bg-indigo-100' />
               </div>
+                <p>{item.userData.name}</p>
               <div>
                 <p>{item.payment ? 'Online' : 'Cash'}</p>
               </div>

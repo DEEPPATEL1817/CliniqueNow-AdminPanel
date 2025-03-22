@@ -42,7 +42,7 @@ max-sm:flex-col max-sm:items-start max-sm:gap-2'>
                 <p>{item.payment ? 'Online' : 'Cash'}</p>
               </div>
               {/* <p>{calculateAge(item.userData.dob)}</p> */}
-              <p>Calulating</p>
+              <p className='hidden'>Calulating</p>
               <p>{slotDateFormat(item.slotDate)}, {item.slotTime}</p>
               <p>{currency}{item.amount}</p>
               {
@@ -50,7 +50,7 @@ max-sm:flex-col max-sm:items-start max-sm:gap-2'>
                 ? <p className='text-red-100 text-xs font-medium' >Cancelled</p> 
                 : item.isCompleted 
                 ? <p className='text-green-500 text-xs font-medium'>Completed</p> 
-                : <div>
+                : <div className='flex items-center '>
                   <img onClick={() => cancelAppointment(item._id)} src={assets.cancel_icon} alt="" />
                   <img onClick={() => completeAppointment(item._id)} src={assets.tick_icon} alt="" />
                 </div>

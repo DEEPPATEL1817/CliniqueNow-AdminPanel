@@ -42,12 +42,12 @@ max-sm:flex-col max-sm:items-start max-sm:gap-2'>
                 <p>{item.payment ? 'Online' : 'Cash'}</p>
               </div>
               {/* <p>{calculateAge(item.userData.dob)}</p> */}
-              <p className='hidden'>Calulating</p>
+              <p className=''>Calulating</p>
               <p>{slotDateFormat(item.slotDate)}, {item.slotTime}</p>
               <p>{currency}{item.amount}</p>
               {
                 item.cancelled 
-                ? <p className='text-red-100 text-xs font-medium' >Cancelled</p> 
+                ? <p className='text-red-400 text-xs font-medium' >Cancelled</p> 
                 : item.isCompleted 
                 ? <p className='text-green-500 text-xs font-medium'>Completed</p> 
                 : <div className='flex items-center '>
